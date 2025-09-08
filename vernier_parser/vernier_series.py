@@ -6,7 +6,7 @@ Author: Rob Waters
 import pathlib
 import statistics
 
-from vernier import Vernier
+from vernier_parser.vernier import Vernier
 
 
 class VernierRecordsNotParsedError(Exception):
@@ -45,21 +45,22 @@ class VernierSeries:
     Class for holding a series of data from many Vernier files.
     """
 
-    def __init__(self, config: str, run_num: str) -> None:
+    def __init__(self, run_path: str) -> None:
         """
         VernierSeries initialiser.
 
         Args:
-            config (str): configuration name, should be a corresponding folder
-                with records in.
-            run_num (str): run number, should be a subfolder with data in
-                below config folder.
+            run_path (str): path to the run folder, which should contain a
+                vernier output file per mpi rank
+
+        Raises:
+            FileNotFoundError: if the input run_path does not exist.
 
         """
-        self.config = config
-        self.run_num = run_num
+        self.run_path = pathlib.Path(run_path)
 
-        self.run_path = pathlib.Path(".", config, f"run{run_num}")
+        if not self.run_path.exists():
+            raise FileNotFoundError(self.run_path)
 
         self.mpi_ranks = None
         self.determine_mpi_ranks()
