@@ -137,3 +137,16 @@ class VernierSeries:
             }
 
         return results
+
+    def make_summary_csv(self, csv_output_path: str) -> None:
+        """
+        Method to make and save a summary csv for the vernier series.
+
+        Args:
+            csv_output_path (str): path for the output csv
+
+        Raises:
+            NotImplementedError: Need to write
+
+        """
+        raise NotImplementedError
